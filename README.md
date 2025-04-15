@@ -1,4 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Yamba AI
+
+A fun AI driven human portrait scoring app.
+
+## Project Structure
+
+```
+├── app/                    # Next.js app directory (pages and layouts)
+├── components/            # React components
+├── src/
+│   ├── backend/          # Backend code
+│   │   ├── api/         # API routes
+│   │   ├── services/    # Business logic
+│   │   ├── models/      # Data models
+│   │   └── middleware/  # Custom middleware
+│   └── shared/          # Shared code
+│       ├── types/       # TypeScript types
+│       ├── constants/   # Shared constants
+│       └── utils/       # Shared utilities
+├── public/              # Static files
+```
 
 ## Getting Started
 
