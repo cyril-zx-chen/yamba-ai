@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { FiUpload, FiEye } from 'react-icons/fi';
 
@@ -35,6 +35,7 @@ const ButtonTemplate = ({
 };
 
 export default function ImageUploadPage() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +47,10 @@ export default function ImageUploadPage() {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click(); // Programmatically click the hidden input
   };
 
   const uploadIcon = <FiUpload className="w-8 h-8" />;
@@ -77,6 +82,7 @@ export default function ImageUploadPage() {
           <div className="w-full flex gap-4">
             <label className="flex-1 w-full">
               <input
+                ref={fileInputRef}
                 type="file"
                 className="hidden"
                 accept="image/*"
@@ -85,6 +91,7 @@ export default function ImageUploadPage() {
               <ButtonTemplate
                 icon={uploadIcon}
                 text="Select an image"
+                onClick={handleUploadClick}
                 className="w-full bg-blue-400 border border-blue-500 hover:bg-blue-500 hover:text-white cursor-pointer"
               />
             </label>
