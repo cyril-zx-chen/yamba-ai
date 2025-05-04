@@ -5,19 +5,21 @@ A fun AI driven human portrait scoring app.
 ## Project Structure
 
 ```
-├── app/                    # Next.js app directory (pages and layouts)
-├── components/            # React components
-├── src/
-│   ├── backend/          # Backend code
-│   │   ├── api/         # API routes
-│   │   ├── services/    # Business logic
-│   │   ├── models/      # Data models
-│   │   └── middleware/  # Custom middleware
-│   └── shared/          # Shared code
-│       ├── types/       # TypeScript types
-│       ├── constants/   # Shared constants
-│       └── utils/       # Shared utilities
-├── public/              # Static files
+├── app/                    # Next.js app directory (routing, pages, layouts, API)
+│   ├── api/                # API endpoints (Next.js Route Handlers)
+│   │   ├── evaluate/       # /api/evaluate endpoint
+│   │   │   └── route.ts
+│   ├── image-upload/       # Image upload and evaluation page
+│   │   └── page.tsx
+│   ├── globals.css         # Global styles
+│   ├── layout.tsx          # Root layout
+│   └── page.tsx            # Main landing page
+├── components/             # (Empty) Place for shared React components
+├── public/                 # Static files (SVGs, images, etc.)
+├── .env.local              # Environment variables (not committed)
+├── package.json            # Project metadata and scripts
+├── tsconfig.json           # TypeScript configuration
+└── ...                     # Other config and lock files
 ```
 
 ## Getting Started
@@ -33,6 +35,20 @@ pnpm dev
 # or
 bun dev
 ```
+
+## Environment Variables
+
+To use the OpenAI integration, create a `.env.local` file in the project root with the following variables:
+
+```env
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4-vision-preview
+# Optionally, customize the prompt:
+OPENAI_PROMPT=Describe this image in 10 words.
+```
+
+Restart the development server after editing environment variables.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
