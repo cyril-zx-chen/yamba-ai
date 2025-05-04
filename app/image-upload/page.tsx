@@ -39,6 +39,7 @@ export default function ImageUploadPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [evaluationResult, setEvaluationResult] = useState<string | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -59,6 +60,7 @@ export default function ImageUploadPage() {
     if (!selectedImage) return;
     setLoading(true);
     setError(null);
+    setEvaluationResult(null);
     try {
       // Extract base64 string (remove data:image/...;base64, prefix)
       // const base64Image = selectedImage.split(',')[1];
@@ -71,7 +73,8 @@ export default function ImageUploadPage() {
       if (!response.ok) {
         throw new Error('Failed to evaluate image');
       }
-      // Optionally handle response data here
+      const data = await response.json();
+      setEvaluationResult(data.message);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -137,6 +140,15 @@ export default function ImageUploadPage() {
 
           {error && (
             <div className="text-red-500 text-center mt-2">{error}</div>
+          )}
+
+          {evaluationResult && (
+            <div className="mt-4 w-full bg-gray-50 border rounded-lg p-4 text-center">
+              <h2 className="font-semibold mb-2 text-green-500">Tada!</h2>
+              <pre className="text-sm text-gray-700 whitespace-pre-wrap">
+                {evaluationResult}
+              </pre>
+            </div>
           )}
         </div>
       </div>
