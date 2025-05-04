@@ -37,6 +37,8 @@ const ButtonTemplate = ({
 export default function ImageUploadPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -51,6 +53,34 @@ export default function ImageUploadPage() {
 
   const handleUploadClick = () => {
     fileInputRef.current?.click(); // Programmatically click the hidden input
+  };
+
+  const handleEvaluate = async () => {
+    if (!selectedImage) return;
+    setLoading(true);
+    setError(null);
+    try {
+      // Extract base64 string (remove data:image/...;base64, prefix)
+      const base64Image = selectedImage.split(',')[1];
+      const formData = new FormData();
+      formData.append('image', base64Image);
+      const response = await fetch('/api/evalute', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error('Failed to evaluate image');
+      }
+      // Optionally handle response data here
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Unknown error');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const uploadIcon = <FiUpload className="w-8 h-8" />;
@@ -98,11 +128,16 @@ export default function ImageUploadPage() {
 
             <ButtonTemplate
               icon={evaluateIcon}
-              text="Evaluate"
-              disabled={!selectedImage}
+              text={loading ? 'Evaluating...' : 'Evaluate'}
+              disabled={!selectedImage || loading}
               className="w-full bg-green-500 text-white hover:bg-green-600"
+              onClick={handleEvaluate}
             />
           </div>
+
+          {error && (
+            <div className="text-red-500 text-center mt-2">{error}</div>
+          )}
         </div>
       </div>
     </div>
