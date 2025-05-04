@@ -61,10 +61,10 @@ export default function ImageUploadPage() {
     setError(null);
     try {
       // Extract base64 string (remove data:image/...;base64, prefix)
-      const base64Image = selectedImage.split(',')[1];
+      // const base64Image = selectedImage.split(',')[1];
       const formData = new FormData();
-      formData.append('image', base64Image);
-      const response = await fetch('/api/evalute', {
+      formData.append('image', selectedImage);
+      const response = await fetch('/api/evaluate', {
         method: 'POST',
         body: formData,
       });
