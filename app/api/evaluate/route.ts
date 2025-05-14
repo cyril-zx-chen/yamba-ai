@@ -3,8 +3,7 @@ import { NextResponse } from 'next/server';
 const apiKey = process.env.OPENAI_API_KEY!;
 const baseUrl = process.env.OPENAI_BASE_URL!;
 const model = process.env.OPENAI_MODEL!;
-const angelPrompt =
-  '你是一个人类颜值分析专家，请分析这张照片的颜值，并且给出百分制的打分，最后给出改进意见。';
+const prompt = process.env.OPENAI_PROMPT || 'Describe this image in 10 words.';
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -26,7 +25,7 @@ export async function POST(request: Request) {
         {
           role: 'user',
           content: [
-            { type: 'text', text: angelPrompt },
+            { type: 'text', text: prompt },
             {
               type: 'image_url',
               image_url: { url: `${image}`, detail: 'low' },
